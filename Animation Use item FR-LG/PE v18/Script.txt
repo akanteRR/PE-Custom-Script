@@ -1,0 +1,284 @@
+# Credit: bo4p5687
+
+PluginManager.register({
+  :name => "Animation Use item FR/LG",
+  :credits => "bo4p5687"
+})
+
+class UseAnimations
+  def initialize
+    @sprites = {}
+    @viewport = Viewport.new(0,0,Graphics.width,Graphics.height)
+    @viewport.z = 99999
+  end
+#-------------------------------------------------------------------------------
+# Main
+#-------------------------------------------------------------------------------
+  # Item
+  def animationItem(item,pkmn)
+    # Value
+    @item = item
+    @pkmn = pkmn
+    # Position
+    middlex = SCREEN_WIDTH/2
+    middley = SCREEN_HEIGHT/2
+    # Background
+    create_sprite("bg","Background Item",@viewport)
+    # Set pokemon
+    filename = pbCheckPokemonBitmapFiles([@pkmn.species,false,(@pkmn.female?),
+       @pkmn.shiny?,(@pkmn.form rescue 0),@pkmn.shadowPokemon?])
+    @sprites["pkmn"] = Sprite.new(@viewport)
+    @sprites["pkmn"].bitmap = Bitmap.new(filename)
+    set_oxoy_sprite("pkmn",@sprites["pkmn"].bitmap.width/2,@sprites["pkmn"].bitmap.height/2)
+    set_xy_sprite("pkmn",middlex,middley)
+    pbWait(5)
+    # Set item
+    filename = sprintf("item%03d",@item)
+    create_sprite("item","#{filename}",@viewport,"Icons")
+    set_oxoy_sprite("item",@sprites["item"].bitmap.width/2,@sprites["item"].bitmap.height/2)
+    set_xy_sprite("item",middlex-10,middley-10)
+    set_oxoy_sprite("item",@sprites["item"].bitmap.width,@sprites["item"].bitmap.height)
+    pbWait(10)
+    zoom = 1
+    4.times { pbWait(5); zoom -= 0.25; set_zoom("item",zoom,zoom) }
+    # Set flash
+    # Small
+    (0...16).each { |i| create_sprite("flashS #{i}","White",@viewport)
+    set_oxoy_sprite("flashS #{i}",@sprites["flashS #{i}"].bitmap.width/2,@sprites["flashS #{i}"].bitmap.height/2)
+    set_xy_sprite("flashS #{i}",middlex,middley) }
+    # Big
+    (0...8).each { |i| create_sprite("flashB #{i}","White",@viewport)
+    set_oxoy_sprite("flashB #{i}",@sprites["flashB #{i}"].bitmap.width/2,@sprites["flashB #{i}"].bitmap.height/2)
+    set_xy_sprite("flashB #{i}",middlex,middley) }
+    pbWait(5)
+    # Radius (increase/decrease)
+    r = 0
+    8.times {
+    # Small
+    srr = r
+    set_xy_sprite("flashS 0",middlex,middley-srr)
+    set_xy_sprite("flashS 1",middlex-srr,middley)
+    set_xy_sprite("flashS 2",middlex,middley+srr)
+    set_xy_sprite("flashS 3",middlex+srr,middley)
+    (0...3).each{ |i|
+    name = 3+i+1; name1 = 3*2+i+1; name2 = 3*3+i+1; name3 = 3*4+i+1
+    addnumm = (Math.sin((22.5)*(i+1))*srr).floor
+    xm = middlex - addnumm; xm2 = middlex + addnumm
+    rym = Math.sqrt(srr**2-addnumm**2)
+    ym = middley - rym; ym2 = middley + rym
+    set_xy_sprite("flashS #{name}",xm,ym)
+    set_xy_sprite("flashS #{name1}",xm,ym2)
+    set_xy_sprite("flashS #{name2}",xm2,ym)
+    set_xy_sprite("flashS #{name3}",xm2,ym2) }
+    # Big
+    brr = 50+r
+    set_xy_sprite("flashB 0",middlex,middley-brr)
+    set_xy_sprite("flashB 1",middlex-brr,middley)
+    set_xy_sprite("flashB 2",middlex,middley+brr)
+    set_xy_sprite("flashB 3",middlex+brr,middley)
+    addnumb = (Math.sin(45)*brr).floor
+    xb = middlex - addnumb; xb2 = middlex + addnumb
+    ryb = Math.sqrt(brr**2-addnumb**2)
+    yb = middley - ryb; yb2 = middley + ryb
+    set_xy_sprite("flashB 4",xb,yb)
+    set_xy_sprite("flashB 5",xb,yb2)
+    set_xy_sprite("flashB 6",xb2,yb)
+    set_xy_sprite("flashB 7",xb2,yb2)
+    r += 30; pbWait(3) }
+    # Set visible
+    (0...16).each { |i| set_visible_sprite("flashS #{i}") }
+    (0...8).each { |i| set_visible_sprite("flashB #{i}") }
+    pbWait(10)
+  end
+ 
+  # TM/HM
+  def animationTMHM(item,pkmn,name,oldmove,movename,four,&block)
+    # Value
+    @item = item
+    @pkmn = pkmn
+    # Position
+    middlex = SCREEN_WIDTH/2
+    middley = SCREEN_HEIGHT/2
+    # Create scene
+    # Background
+    create_sprite("bg","Background TM HM",@viewport)
+    # Overlay
+    @sprites["overlay"] = BitmapSprite.new(Graphics.width,Graphics.height,@viewport)
+    @sprites["overlay"].bitmap.fill_rect(0,0,SCREEN_WIDTH,SCREEN_HEIGHT,Color.new(213,255,254))
+    @sprites["overlay"].opacity = 0
+    # Set pokemon
+    filename = pbCheckPokemonBitmapFiles([@pkmn.species,false,(@pkmn.female?),
+       @pkmn.shiny?,(@pkmn.form rescue 0),@pkmn.shadowPokemon?])
+    @sprites["pkmn"] = Sprite.new(@viewport)
+    @sprites["pkmn"].bitmap = Bitmap.new(filename)
+    set_oxoy_sprite("pkmn",@sprites["pkmn"].bitmap.width/2,@sprites["pkmn"].bitmap.height/2)
+    set_xy_sprite("pkmn",middlex,middley)
+    set_zoom("pkmn",2,2)
+    # Set item
+    type = pbGetMoveData(@item,MOVE_TYPE)
+    filename = sprintf("itemMachine%s",getConstantName(PBTypes,type))
+    create_sprite("item","#{filename}",@viewport,"Icons")
+    set_oxoy_sprite("item",@sprites["item"].bitmap.width/2,@sprites["item"].bitmap.height/2)
+    set_xy_sprite("item",middlex-5,middley-20)
+    set_zoom("item",2,2)
+    set_oxoy_sprite("item",@sprites["item"].bitmap.width,@sprites["item"].bitmap.height)
+    set_visible_sprite("item")
+  if four
+    # Message
+    pbMessage(_INTL("1,\\wt[16] 2, and\\wt[16]...\\wt[16] ...\\wt[16] ... Ta-da!\\se[Battle ball drop]\1"),&block)
+    # Forget move
+    @sprites["pkmn"].color.alpha = 255
+    # Star
+    (0...2).each{|i| create_sprite("star #{i}","Star",@viewport)
+    set_oxoy_sprite("star #{i}",@sprites["star #{i}"].bitmap.width/2,@sprites["star #{i}"].bitmap.height/2)
+    set_xy_sprite("star #{i}",middlex,middley-70) }
+    pbWait(1)
+    n = 0; res = 0
+    (0...6).each { |i|
+    addsx = 20*(i+1)
+    xs = middlex - addsx; xs2 = middlex + addsx
+    addsy=15+10*(i+1)
+    (i<3)? (ys=middley-70-addsy; res=ys) : (ys=res+8*(i-2*n); n+=1)
+    set_xy_sprite("star 0",xs,ys); set_xy_sprite("star 1",xs2,ys); pbWait(5) }
+    (0...2).each{|i| set_visible_sprite("star #{i}") }
+    17.times { @sprites["pkmn"].color.alpha-=15; pbWait(2)}
+    # Message
+    pbMessage(_INTL("{1} forgot how to use {2}.\\nAnd...\1",name,oldmove),&block)
+  end 
+    # Teach move
+    set_visible_sprite("item",true)
+    pbWait(5)
+    # Zoom out (pokemon)
+    zoom = 2
+    (0...5).each { |i| zoom -= 0.25
+    set_zoom("pkmn",zoom,zoom); set_zoom("item",zoom,zoom); pbWait(3) }
+    pbWait(5)
+    # Animation
+    14.times { @sprites["overlay"].opacity += 15 }
+    (0...32).each { |i| create_sprite("flash #{i}","White",@viewport)
+    case i
+    when 0..4; xcoor = middlex - rand(middlex/2); ycoor = middley - rand(middley/2)
+    when 5..9; xcoor = middlex - rand(middlex/2); ycoor = middley + rand(middley/2)
+    when 10..14; xcoor = middlex + rand(middlex/2); ycoor = middley - rand(middley/2)
+    when 15..19; xcoor = middlex + rand(middlex/2); ycoor = middley + rand(middley/2)
+    when 20..22; xcoor = middlex/2 - rand(middlex/2); ycoor = middley/2 - rand(middley/2)
+    when 23..25; xcoor = middlex/2 - rand(middlex/2); ycoor = middley*1.5 + rand(middley/2)
+    when 26..28; xcoor = middlex*1.5 + rand(middlex/2); ycoor = middley/2 - rand(middley/2)
+    else; xcoor = middlex*1.5 + rand(middlex/2); ycoor = middley*1.5 + rand(middley/2)
+    end
+    setXYF("x #{i}","y #{i}",xcoor,ycoor)
+    set_xy_sprite("flash #{i}",xcoor,ycoor) }
+    pbWait(5)
+    (0...10).each { |i|
+    shake = (i==1||i==9)? 3 : 6
+    xpshake = (i%2==0)? middlex-shake : middlex+shake
+    xishake = (i%2==0)? middlex-5-shake : middlex-5+shake
+    set_xy_sprite("pkmn",xpshake,middley)
+    set_xy_sprite("item",xishake,middley-20)
+    (0...32).each { |j|
+    xch = @xyf["x #{j}"]; ych = @xyf["y #{j}"]
+    xxx = ((middlex-xch)/10).floor; xxx2 = ((xch-middlex)/10).floor
+    yyy = ((middley-ych)/10).floor; yyy2 = ((ych-middley)/10).floor
+    case j
+    when 0..4
+      @sprites["flash #{j}"].x += xxx
+      @sprites["flash #{j}"].y += yyy
+    when 5..9
+      @sprites["flash #{j}"].x += xxx
+      @sprites["flash #{j}"].y -= yyy2
+    when 10..14
+      @sprites["flash #{j}"].x -= xxx2
+      @sprites["flash #{j}"].y += yyy
+    when 15..19
+      @sprites["flash #{j}"].x -= xxx2
+      @sprites["flash #{j}"].y -= yyy2
+    when 20..22
+      @sprites["flash #{j}"].x += xxx
+      @sprites["flash #{j}"].y += yyy
+    when 23..25
+      @sprites["flash #{j}"].x += xxx
+      @sprites["flash #{j}"].y -= yyy2
+    when 26..28
+      @sprites["flash #{j}"].x -= xxx2
+      @sprites["flash #{j}"].y += yyy
+    else
+      @sprites["flash #{j}"].x -= xxx2
+      @sprites["flash #{j}"].y -= yyy2
+    end }
+    pbWait(3) }
+    (0...32).each { |i| set_visible_sprite("flash #{i}")}
+    14.times { @sprites["overlay"].opacity -= 15; pbWait(2) }
+    set_visible_sprite("item")
+    # Message
+    pbMessage(_INTL("\\se[]{1} learned {2}!\\se[Pkmn move learnt]",name,movename),&block)
+    # End
+    endScene
+  end
+ 
+  def setXYF(xname,yname,xcoor,ycoor)
+    @xyf = {} if !@xyf
+    @xyf[xname] = xcoor
+    @xyf[yname] = ycoor
+  end
+#-------------------------------------------------------------------------------
+# Set
+#-------------------------------------------------------------------------------
+  # Image
+  def create_sprite(spritename,filename,vp,dir="Pictures/Use Animations")
+    @sprites["#{spritename}"] = Sprite.new(vp)
+    @sprites["#{spritename}"].bitmap = Bitmap.new("Graphics/#{dir}/#{filename}")
+  end
+  # Set ox, oy
+  def set_oxoy_sprite(spritename,ox,oy)
+    @sprites["#{spritename}"].ox = ox
+    @sprites["#{spritename}"].oy = oy
+  end
+  # Set x, y
+  def set_xy_sprite(spritename,x,y)
+    @sprites["#{spritename}"].x = x
+    @sprites["#{spritename}"].y = y
+  end
+  # Set zoom
+  def set_zoom(spritename,zoom_x,zoom_y)
+    @sprites["#{spritename}"].zoom_x = zoom_x
+    @sprites["#{spritename}"].zoom_y = zoom_y
+  end
+  # Set visible
+  def set_visible_sprite(spritename,vsb=false)
+    @sprites["#{spritename}"].visible = vsb
+  end
+#-------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
+  def endScene
+    pbDisposeSpriteHash(@sprites)
+  end
+end
+
+class PokemonParty_Scene
+  alias scene_use_animation pbStartScene
+  def pbStartScene(party,starthelptext,annotations=nil,multiselect=false)
+    scene_use_animation(party,starthelptext,annotations,multiselect)
+    @viewport2 = Viewport.new(0,0,Graphics.width,Graphics.height)
+    @viewport2.z = 999999
+    @sprites["messagebox"].viewport = @viewport2
+  end
+ 
+  def pbUseAnimations(item,pkmn)
+    @use = UseAnimations.new
+    @use.animationItem(item,pkmn)
+  end
+ 
+  def endUseAnimations
+    @use.endScene if @use
+  end
+end
+
+class PokemonPartyScreen
+  def pbUseAnimations(item,pkmn)
+    @scene.pbUseAnimations(item,pkmn)
+  end
+ 
+  def endUseAnimations
+    @scene.endUseAnimations
+  end
+end
