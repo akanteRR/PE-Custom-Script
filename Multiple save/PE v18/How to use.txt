@@ -1,0 +1,11 @@
+1. In 'Settings', add:
+
+# Set name of folder
+DIR_SAVE_GAME = "Save Game"
+# Set name of file for saving:
+# Ex: Game1,Game2,etc
+FILENAME_SAVE_GAME = "Game"
+
+2. Change 'def pbSetUpSystem' into file "2 - Set up system"
+
+3. Paste "1 - Save Load" above Main
