@@ -26,33 +26,45 @@ end
 #-------------------------------------------------------------------------------
 # Method
 #-------------------------------------------------------------------------------
-def checkAndRenameForFile(limit,filename="Game",dir="Save Game")
-  (0...limit).each { |i|
-  # Return number
-  real = i + 1
-  # call name
-  name = sprintf("#{filename}%d.rxdata",real)
-  if i>0
-    num = -1
-    loop do
-      num += 1
-      othername = sprintf("#{filename}%d.rxdata",num + real)
-      if File.exist?("#{dir}/#{othername}") && !File.exist?("#{dir}/#{name}")
-        File.rename("#{dir}/#{othername}","#{dir}/#{name}")
+def checkAndRenameForFile(limit,file="Game",dir="Save Game")
+  return if limit<=0
+  arr = Dir.glob("#{dir}/#{file}*.rxdata")
+  File.rename("#{dir}/#{file}.rxdata", "#{dir}/#{file}1.rxdata") if File.file?("#{dir}/#{file}.rxdata")
+  name = []
+  arr.each { |f| name << ( File.basename(f, ".rxdata").gsub(/[^0-9]/, "") ) }
+  needtorewrite = false
+  (0...arr.size).each { |i|
+    needtorewrite = true if arr[i]!="#{dir}/#{file}#{name[i]}.rxdata"
+  }
+  if needtorewrite
+    numbername = []
+    name.each { |n| numbername << n.to_i}
+    (0...numbername.size).each { |i|
+      loop do
+        break if i==0
+        diff = numbername.index(numbername[i])
+        break if diff==i
+        numbername[i] += 1
       end
-      break if File.exist?("#{dir}/#{name}")
-    end
-  else
+      Dir.mkdir("#{dir}/#{numbername[i]}")
+      File.rename("#{arr[i]}", "#{dir}/#{numbername[i]}/#{file}#{numbername[i]}.rxdata")
+    }
+    (0...name.size).each { |i|
+      name2 = "#{dir}/#{numbername[i]}/#{file}#{numbername[i]}.rxdata"
+      File.rename(name2, "#{dir}/#{file}#{numbername[i]}.rxdata")
+      Dir.delete("#{dir}/#{numbername[i]}")
+    }
+  end
+  arr.size.times { |i|
     num = 0
+    namef = sprintf("%d", i + 1)
     loop do
-      num += 1
-      othername = sprintf("#{filename}%d.rxdata",num + real)
-      if File.exist?("#{dir}/#{othername}") && !File.exist?("#{dir}/#{name}")
-        File.rename("#{dir}/#{othername}","#{dir}/#{name}")
-      end
-      break if File.exist?("#{dir}/#{name}")
+      break if File.file?("#{dir}/#{file}#{namef}.rxdata")
+      num    += 1
+      namef2  = sprintf("%d", i + 1 + num)
+      File.rename("#{dir}/#{file}#{namef2}.rxdata", "#{dir}/#{file}#{namef}.rxdata") if File.file?("#{dir}/#{file}#{namef2}.rxdata")
     end
-  end }
+  }
 end
 #-------------------------------------------------------------------------------
 # This will create a new file save
@@ -126,7 +138,7 @@ def pbEmergencySave
   dir = DIR_SAVE_GAME; filename = FILENAME_SAVE_GAME
   count = countFileSave
   # It will check the last save for saving
-  if safeExists?("#{dir}/#{filename}#{count}.rxdata") 
+  if safeExists?("#{dir}/#{filename}#{count}.rxdata")
     File.open("#{dir}/#{filename}#{count}.rxdata",  'rb') { |r|
       File.open("#{dir}/#{filename}#{count}.rxdata.bak", 'wb') { |w|
         while s = r.read(4096)
@@ -285,7 +297,7 @@ class PokemonLoadScreen
     @scene.pbEndScene
     $scene = pbCallTitle
   end
-  
+
   # Rewrite start load screen
   def pbStartLoadScreen
     $PokemonTemp   = PokemonTemp.new
@@ -397,7 +409,7 @@ end
 class ScreenChooseFileSave
   attr_reader :staymenu
   attr_reader :deletefile
-  
+
   def initialize(count)
     @sprites = {}
     @viewport = Viewport.new(0,0,Graphics.width,Graphics.height)
@@ -424,7 +436,7 @@ class ScreenChooseFileSave
     @mysgif = false
     #@trainer = nil
   end
-  
+
   # Set background (used "loadbg")
   def drawBg
     color = Color.new(248,248,248)
@@ -444,7 +456,7 @@ class ScreenChooseFileSave
     num = (@count>7)? 7 : @count
     (0...num).each { |i|
     create_sprite("panel #{i}","loadPanels",@viewport)
-    w = 384; h = 46 
+    w = 384; h = 46
     set_src_wh_sprite("panel #{i}",w,h)
     x = 16; y = 444
     set_src_xy_sprite("panel #{i}",x,y)
@@ -452,7 +464,7 @@ class ScreenChooseFileSave
     set_xy_sprite("panel #{i}",x,y) }
     # Set choose bar
     create_sprite("choose panel","loadPanels",@viewport)
-    w = 384; h = 46 
+    w = 384; h = 46
     set_src_wh_sprite("choose panel",w,h)
     x = 16; y = 444 + 46
     set_src_xy_sprite("choose panel",x,y)
@@ -462,12 +474,12 @@ class ScreenChooseFileSave
     textPanel
     pbFadeInAndShow(@sprites) { update }
   end
-  
+
   def choosePanel(pos=0)
     x = 24*2; y = 16*2 + 48*pos
     set_xy_sprite("choose panel",x,y)
   end
-  
+
   # Draw text panel
   BaseColor   = Color.new(252,252,252)
   ShadowColor = Color.new(0,0,0)
@@ -482,15 +494,15 @@ class ScreenChooseFileSave
       endnum = 7
     end
     textpos = []
-    (0...endnum).each { |i| 
+    (0...endnum).each { |i|
       string = _INTL("Save File #{namesave+1+i}")
       x = 24*2 + 36; y = 16*2 + 5 + 48*i
-      textpos<<[string,x,y,0,BaseColor,ShadowColor] 
+      textpos<<[string,x,y,0,BaseColor,ShadowColor]
     }
     (font.nil?)? pbSetSystemFont(bitmap) : bitmap.font.name = font
     pbDrawTextPositions(bitmap,textpos)
   end
-  
+
   # Move panel
   # Type: 0: Save; 1: Load; 2: Delete
   def movePanel(type=0)
@@ -594,12 +606,12 @@ class ScreenChooseFileSave
           # Set up system again
           pbSetUpSystem(@position)
           if @posinfor==0
-            loadOldFile 
+            loadOldFile
             @staymenu = false
             break
           # Mystery Gift
           elsif @posinfor==1 && @mysgif
-            pbFadeOutIn { 
+            pbFadeOutIn {
               @trainer = pbDownloadMysteryGift(@trainer)
               @posinfor = 0; @qinfor = 0; @mysgif = false
               dispose; draw = true; loadmenu=false; infor = false
@@ -649,7 +661,7 @@ class ScreenChooseFileSave
     set_xy_sprite("infor panel 0",x,y)
     drawInfor(type)
   end
-  
+
   # Color
   TEXTCOLOR             = Color.new(232,232,232)
   TEXTSHADOWCOLOR       = Color.new(136,136,136)
@@ -657,7 +669,7 @@ class ScreenChooseFileSave
   MALETEXTSHADOWCOLOR   = Color.new(56,104,168)
   FEMALETEXTCOLOR       = Color.new(240,72,88)
   FEMALETEXTSHADOWCOLOR = Color.new(160,64,64)
-  
+
   # Draw information (text)
   def drawInfor(type,font=nil)
     dir = DIR_SAVE_GAME; filename = FILENAME_SAVE_GAME
@@ -677,7 +689,7 @@ class ScreenChooseFileSave
         continue = true
       rescue
         if safeExists?(savefile+".bak")
-          begin 
+          begin
             load = pbTryLoadFile(savefile+".bak")
             trainer, framecount, mapid  = [load[0],load[1],load[4]]
             # Load menu
@@ -719,12 +731,12 @@ class ScreenChooseFileSave
       @qinfor+=1 if LANGUAGES.length>=2
       (0...@qinfor).each { |i|
         create_sprite("panel load #{i}","loadPanels",@viewport)
-        w = 384; h = 46 
+        w = 384; h = 46
         set_src_wh_sprite("panel load #{i}",w,h)
         x = 16; y = 444
         set_src_xy_sprite("panel load #{i}",x,y)
         x = 24*2 + 8; y = 16*2 + 48*i + 112*2
-        set_xy_sprite("panel load #{i}",x,y) 
+        set_xy_sprite("panel load #{i}",x,y)
       } if @qinfor>0
     end
     # Move panel (information)
@@ -811,7 +823,7 @@ class ScreenChooseFileSave
       pbFadeInAndShow(@sprites) { update }
     end
   end
-  
+
   def choosePanelInfor
     if @posinfor==0
       w = 408; h = 222
@@ -997,19 +1009,19 @@ class ScreenChooseFileSave
     @sprites["#{spritename}"] = Sprite.new(vp)
     @sprites["#{spritename}"].bitmap = Bitmap.new("Graphics/#{dir}/#{filename}")
   end
-  
+
   # Set x, y
   def set_xy_sprite(spritename,x,y)
     @sprites["#{spritename}"].x = x
     @sprites["#{spritename}"].y = y
   end
-  
+
   # Set src
   def set_src_wh_sprite(spritename,w,h)
     @sprites["#{spritename}"].src_rect.width = w
     @sprites["#{spritename}"].src_rect.height = h
   end
-  
+
   def set_src_xy_sprite(spritename,x,y)
     @sprites["#{spritename}"].src_rect.x = x
     @sprites["#{spritename}"].src_rect.y = y
@@ -1027,17 +1039,17 @@ class ScreenChooseFileSave
   def dispose
     pbDisposeSpriteHash(@sprites)
   end
-  
+
   def update
     pbUpdateSpriteHash(@sprites)
   end
-  
+
   def update_ingame
     Graphics.update
     Input.update
     pbUpdateSpriteHash(@sprites)
   end
-  
+
   def endScene
     #pbFadeOutAndHide(@sprites) { update }
     dispose
