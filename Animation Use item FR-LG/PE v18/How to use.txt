@@ -1,6 +1,8 @@
 *** How to use ***
 Put main script above Main.
 Put the images in Graphics\Pictures\Use Animations.
+There is the link but this isn't compatible for this version (PE v18).
+Just copy the graphics for using and copy script in this version.
 
 *** Important ***
 
@@ -112,7 +114,7 @@ add...
 	scene.endUseAnimations
 ...when you want to delete this scene
 
-**** Remember **** 
+**** Remember ****
 Just add above this line...
 	next true
 
