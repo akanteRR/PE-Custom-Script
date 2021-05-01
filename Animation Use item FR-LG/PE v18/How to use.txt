@@ -89,7 +89,7 @@ above
 pkmn.moves[move].ppup += 1
 add
 scene.pbUseAnimations(item,pkmn)
-above
+below
 scene.pbDisplay(_INTL("{1}'s PP increased.",movename))
 add
 scene.endUseAnimations
