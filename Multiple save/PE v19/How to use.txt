@@ -1,1 +1,4 @@
 Puts this script in folder Plugins
+
+Just only download one folder:
+One file or Separate
