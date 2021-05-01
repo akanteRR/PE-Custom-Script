@@ -12,15 +12,19 @@ Example:
 1) Evolution Stone
 Find
 ItemHandlers::UseOnPokemon.addIf(proc { |item| pbIsEvolutionStone?(item)},
-above
-pbFadeOutInWithMusic {
-add
+
+above...
+	pbFadeOutInWithMusic {
+...add
       scene.pbUseAnimations(item,pkmn)
       scene.endUseAnimations
+
 2) Item recover HP (Potion, max potion,etc)
 Find
 def pbHPItem(pkmn,restoreHP,scene)
-change all into
+
+change all into...
+
 def pbHPItem(item,pkmn,restoreHP,scene)
   if !pkmn.able? || pkmn.hp==pkmn.totalhp
     scene.pbDisplay(_INTL("It won't have any effect."))
@@ -33,83 +37,92 @@ def pbHPItem(item,pkmn,restoreHP,scene)
   scene.endUseAnimations
   return true
 end
-Next, you need to find
+
+...Next, you need to find...
 ItemHandlers::UseOnPokemon.add(:POTION,proc { |item,pkmn,scene|
-change line
-next pbHPItem(pkmn,20,scene)
-into
-next pbHPItem(item,pkmn,20,scene)
+
+...change line...
+	next pbHPItem(pkmn,20,scene)
+...into...
+	next pbHPItem(item,pkmn,20,scene)
 You do like it such as SUPERPOTION, HYPERPOTION,etc. All items use pbHPItem, just add item before pkmn
 
 3) Item heals status (Awakening, antidote,etc)
 Find
 ItemHandlers::UseOnPokemon.add(:AWAKENING,proc { |item,pkmn,scene|
-above
-pkmn.healStatus
-add
-scene.pbUseAnimations(item,pkmn)
-below
-scene.pbDisplay(_INTL("{1} woke up.",pkmn.name))
-add
-scene.endUseAnimations
+
+above...
+	pkmn.healStatus
+...add...
+	scene.pbUseAnimations(item,pkmn)
+...below...
+	scene.pbDisplay(_INTL("{1} woke up.",pkmn.name))
+...add...
+	scene.endUseAnimations
 You do like it such as ANTIDOTE, BURNHEAL,etc. All items use healStatus.
 
 * Other items *
 Max revive:
 Find
 ItemHandlers::UseOnPokemon.add(:MAXREVIVE,proc { |item,pkmn,scene|
-above
-pkmn.healHP
-add
-scene.pbUseAnimations(item,pkmn)
-And remember add
-scene.endUseAnimations
-below
-scene.pbDisplay(_INTL("{1}'s HP was restored.",pkmn.name))
+
+above...
+	pkmn.healHP
+...add...
+	scene.pbUseAnimations(item,pkmn)
+...and remember add...
+	scene.endUseAnimations
+...below...
+	scene.pbDisplay(_INTL("{1}'s HP was restored.",pkmn.name))
 Do this with item like Max revive (the items have pkmn.healHP)
 
 4) Item recover PP (Ether, max ether,etc)
 Find
 ItemHandlers::UseOnPokemon.add(:ETHER,proc { |item,pkmn,scene|
-above
-scene.pbDisplay(_INTL("PP was restored."))
-add
-scene.pbUseAnimations(item,pkmn)
-and below
-scene.pbDisplay(_INTL("PP was restored."))
-add
-scene.endUseAnimations
+
+above...
+	scene.pbDisplay(_INTL("PP was restored."))
+...add...
+	scene.pbUseAnimations(item,pkmn)
+...and below...
+	scene.pbDisplay(_INTL("PP was restored."))
+...add...
+	scene.endUseAnimations
 You do like it such as Elixir, max elixir,etc.
 
 * Other items *
 PP Up:
 Find
 ItemHandlers::UseOnPokemon.add(:PPUP,proc { |item,pkmn,scene|
-above
-pkmn.moves[move].ppup += 1
-add
-scene.pbUseAnimations(item,pkmn)
-below
-scene.pbDisplay(_INTL("{1}'s PP increased.",movename))
-add
-scene.endUseAnimations
+
+above...
+	pkmn.moves[move].ppup += 1
+...add...
+	scene.pbUseAnimations(item,pkmn)
+...below...
+	scene.pbDisplay(_INTL("{1}'s PP increased.",movename))
+...add...
+	scene.endUseAnimations
+
 5) Other Items
 You do like this tip:
-add
-scene.pbUseAnimations(item,pkmn)
-when you want to show animation and add
-scene.endUseAnimations
-when you want to delete this scene
+add...
+	scene.pbUseAnimations(item,pkmn)
+...when you want to show animation and add...
+	scene.endUseAnimations
+...when you want to delete this scene
 
-Remember
-Just add above this line
-next true
+**** Remember **** 
+Just add above this line...
+	next true
 
 *** TM/HM ***
 
 Find
 def pbLearnMove(pkmn,move,ignoreifknown=false,bymachine=false,&block)
-Change all into
+
+Change all into...
+
 def pbLearnMove(pkmn,move,ignoreifknown=false,bymachine=false,&block)
   return false if !pkmn
   movename = PBMoves.getName(move)

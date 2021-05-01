@@ -1,0 +1,3 @@
+﻿Name      = Animation use item (FRLG style)
+Version   = 1.0
+Credits   = bo4p5687
