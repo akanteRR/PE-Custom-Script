@@ -44,3 +44,14 @@
 #-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
 # With the number of terrain tag you can change it in file 'Terrain tag.txt'
+#-------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
+# If you use pokemon following of Golipod, copy this def and puts it below the script Following...
+
+alias ab_surf pbSurf
+def pbSurf
+  tag = $game_map.terrain_tag($game_player.x,$game_player.y)
+  return false if tag.acrobike
+  return ab_surf
+end
