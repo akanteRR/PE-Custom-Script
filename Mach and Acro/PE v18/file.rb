@@ -136,7 +136,6 @@ end
 #-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
 class Game_Map
-  attr_accessor :acrobikejump
   attr_accessor :machbike_speed
 
   alias initialize_ab initialize
@@ -144,7 +143,6 @@ class Game_Map
     # Old initialize
     initialize_ab
     # Set bike
-    @acrobikejump = 0
     @machbike_speed = 0
   end
 
