@@ -1,0 +1,6 @@
+* Graphics:
+	Puts it in Graphics\Pictures (both of folder)
+
+* Script:
+	Puts it above Main. Just choose one ( All (many script) or One for all (only one) ).
+	It's same but with One for all (only one), modifying is hard.

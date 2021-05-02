@@ -4,3 +4,4 @@ It will load the first save file but you must choose save file which you want to
 You can delete save file in 'load menu' like PE (raw), you can choose delete all or just only one.
 You can choose it when you save file in your game, too.
 Quit game is same.
+Save current save file (it isn't feature of v.18)
