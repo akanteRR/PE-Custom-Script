@@ -9,7 +9,7 @@
 #
 # * How to use:
 #    - Insert Script 
-#       + 'Terrain tag.txt' above Main
+#       + 'Terrain tag.rb' above Main
 #       + Puts the files in 'Mach and acro bike.rar' in \Plugins\Mach and acro bike (You need to create folder Mach and acro bike in folder Plugins)
 #
 # * How To Use (Acro Bike):
