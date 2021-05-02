@@ -165,11 +165,7 @@ class Game_Map
       elsif $PokemonGlobal.acrobike && PBTerrain.isAcroBike?(terrain)
         return (passage & bit == 0)
       elsif $PokemonGlobal.acrobike && PBTerrain.isAcroBikeHop?(terrain)
-        if @acrobikejump==1
-          return true
-        else
-          return false
-        end
+        return @acrobikejump==1
       elsif !$PokemonGlobal.acrobike && (PBTerrain.isAcroBike?(terrain) || PBTerrain.isAcroBikeHop?(terrain))
         return false
       # Depend on passability of bridge tile if on bridge
