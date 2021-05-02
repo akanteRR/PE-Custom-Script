@@ -76,7 +76,8 @@ module PBTerrain
 
   def self.isAcroBike?(tag)
     return tag==PBTerrain::ACROBIKEUpDown ||
-           tag==PBTerrain::ACROBIKELeftRight
+           tag==PBTerrain::ACROBIKELeftRight ||
+           tag==PBTerrain::ACROBIKEHOP
   end
 
   def self.isUDAcroBike?(tag)
@@ -162,12 +163,8 @@ class Game_Map
       elsif $PokemonGlobal.bicycle && PBTerrain.onlyWalk?(terrain)
         return false
       # Acro bike
-      elsif $PokemonGlobal.acrobike && PBTerrain.isAcroBike?(terrain)
-        return (passage & bit == 0)
-      elsif $PokemonGlobal.acrobike && PBTerrain.isAcroBikeHop?(terrain)
-        return @acrobikejump==1
-      elsif !$PokemonGlobal.acrobike && (PBTerrain.isAcroBike?(terrain) || PBTerrain.isAcroBikeHop?(terrain))
-        return false
+      elsif PBTerrain.isAcroBike?(terrain)
+        $PokemonGlobal.acrobike ? (return (passage & bit == 0)) : (return false)
       # Depend on passability of bridge tile if on bridge
       elsif PBTerrain.isBridge?(terrain) && $PokemonGlobal.bridge>0
         return (passage & bit == 0 && passage & 0x0f != 0x0f)
@@ -289,8 +286,7 @@ def pbAcroBike
       tag = $game_map.terrain_tag(x, y)
       direction = PBTerrain.isMachBike?(tag) ? nil : 6
     end
-    if !direction.nil? && !$game_player.pbFacingEvent && ( passableAB(x,y,d,tag) || PBTerrain.isAcroBikeHop?(tag) )
-      $game_map.acrobikejump = 1 if PBTerrain.isAcroBikeHop?(tag)
+    if !direction.nil? && !$game_player.pbFacingEvent && passableAB(x,y,d,tag)
       case direction
       when 2; x = 0; y = 1    # down
       when 4; x = -1; y = 0   # left
@@ -303,7 +299,6 @@ def pbAcroBike
         Input.update
         pbUpdateSceneMap
       end
-      $game_map.acrobikejump = 0
       direction = nil
     end
     if PBTerrain.isLRAcroBike?($game_map.terrain_tag($game_player.x,$game_player.y))
@@ -343,7 +338,7 @@ end
 alias ab_surf pbSurf
 def pbSurf
   tag = $game_map.terrain_tag($game_player.x,$game_player.y)
-  return false if PBTerrain.isAcroBikeHop?(tag) || PBTerrain.isAcroBike?(tag)
+  return false if PBTerrain.isAcroBike?(tag)
   return ab_surf
 end
 #-------------------------------------------------------------------------------
@@ -352,13 +347,7 @@ ItemHandlers::UseInField.add(:BICYCLE,proc { |item|
   if pbBikeCheck
     $PokemonGlobal.machbike = false
     $PokemonGlobal.acrobike = false
-    if $PokemonGlobal.bicycle
-      pbDismountBike
-    else
-      pbMountBike
-      # Add sound
-      pbSEPlay('Bicycle Horn',100,100)
-    end
+    $PokemonGlobal.bicycle ? pbDismountBike : pbMountBike
     next 1
   end
   next 0
@@ -372,8 +361,6 @@ ItemHandlers::UseInField.add(:ACROBIKE,proc { |item|
     else
       pbMountBike
       $PokemonGlobal.acrobike = true
-      # Add sound
-      pbSEPlay('Bicycle Horn',100,100)
     end
     next 1
   end
@@ -388,8 +375,6 @@ ItemHandlers::UseInField.add(:MACHBIKE,proc { |item|
     else
       pbMountBike
       $PokemonGlobal.machbike = true
-      # Add sound
-      pbSEPlay('Bicycle Horn',100,100)
     end
     next 1
   end
