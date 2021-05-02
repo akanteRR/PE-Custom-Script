@@ -101,55 +101,6 @@ end
 #and 19 for the rails where player just goes left / right
 #-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
-class Game_Character
-  def jumpAB(x_plus, y_plus)
-    tag = $game_map.terrain_tag($game_player.x,$game_player.y)
-    if !PBTerrain.isAcroBike?(tag)
-      if x_plus != 0 or y_plus != 0
-        if x_plus.abs > y_plus.abs
-          (x_plus < 0) ? turn_left : turn_right
-        else
-          (y_plus < 0) ? turn_up : turn_down
-        end
-      end
-    end
-    if PBTerrain.isLRAcroBike?($game_map.terrain_tag($game_player.x,$game_player.y-1)) ||
-      PBTerrain.isLRAcroBike?($game_map.terrain_tag($game_player.x,$game_player.y+1))
-      if x_plus != 0 || y_plus != 0
-        turn_right if $game_player.direction==8
-        turn_left if $game_player.direction==2
-      end
-    elsif PBTerrain.isUDAcroBike?($game_map.terrain_tag($game_player.x-1,$game_player.y)) ||
-      PBTerrain.isUDAcroBike?($game_map.terrain_tag($game_player.x+1,$game_player.y))
-      if x_plus != 0 || y_plus != 0
-        turn_down if ($game_player.direction==4 || $game_player.direction==6)
-      end
-    end
-    new_x = @x + x_plus
-    new_y = @y + y_plus
-    if (x_plus == 0 and y_plus == 0) || passable?(new_x, new_y, 0)
-      @x = new_x
-      @y = new_y
-      real_distance = Math::sqrt(x_plus * x_plus + y_plus * y_plus)
-      distance = [1, real_distance].max
-      @jump_peak = distance * Game_Map::TILE_HEIGHT * 3 / 8   # 3/4 of tile for ledge jumping
-      @jump_distance = [x_plus.abs * Game_Map::REAL_RES_X, y_plus.abs * Game_Map::REAL_RES_Y].max
-      @jump_distance_left = 0.5   # Just needs to be non-zero
-      if real_distance > 0   # Jumping to somewhere else
-        @jump_count = 0
-      else   # Jumping on the spot
-				@jump_speed_real = nil   # Reset jump speed
-        @jump_count = Game_Map::REAL_RES_X / jump_speed_real   # Number of frames to jump one tile
-      end
-      @stop_count = 0
-      if self.is_a?(Game_Player)
-        $PokemonTemp.dependentEvents.pbMoveDependentEvents
-      end
-      triggerLeaveTile
-    end
-  end
-end
-
 class Game_Player
   alias old_up_command_new update_command_new
   def update_command_new
@@ -322,40 +273,40 @@ def pbAcroBike
       y = $game_player.y + 1
       d = $game_player.direction
       tag = $game_map.terrain_tag(x, y)
-			direction = PBTerrain.isMachBike?(tag) ? nil : 2
+      direction = PBTerrain.isMachBike?(tag) ? nil : 2
     when Input.count(Input::UP)
-			x = $game_player.x
+      x = $game_player.x
       y = $game_player.y - 1
       d = $game_player.direction
       tag = $game_map.terrain_tag(x, y)
-			direction = PBTerrain.isMachBike?(tag) ? nil : 8
+      direction = PBTerrain.isMachBike?(tag) ? nil : 8
     when Input.count(Input::LEFT)
-			x = $game_player.x - 1
+      x = $game_player.x - 1
       y = $game_player.y
       d = $game_player.direction
       tag = $game_map.terrain_tag(x, y)
-			direction = PBTerrain.isMachBike?(tag) ? nil : 4
+      direction = PBTerrain.isMachBike?(tag) ? nil : 4
     when Input.count(Input::RIGHT)
-			x = $game_player.x + 1
+      x = $game_player.x + 1
       y = $game_player.y
       d = $game_player.direction
       tag = $game_map.terrain_tag(x, y)
-			direction = PBTerrain.isMachBike?(tag) ? nil : 6
+      direction = PBTerrain.isMachBike?(tag) ? nil : 6
     end
     if !direction.nil? && !$game_player.pbFacingEvent && ( passableAB(x,y,d,tag) || PBTerrain.isAcroBikeHop?(tag) )
       $game_map.acrobikejump = 1 if PBTerrain.isAcroBikeHop?(tag)
-			case direction
-			when 2; x = 0; y = 1    # down
-			when 4; x = -1; y = 0   # left
-			when 6; x = 1; y = 0    # right
-			when 8; x = 0; y =-1    # up
-			end
-			pbMoveRoute($game_player, [14, x, y], true)
-			while $game_player.jumping?
-				Graphics.update
-				Input.update
-				pbUpdateSceneMap
-			end
+      case direction
+      when 2; x = 0; y = 1    # down
+      when 4; x = -1; y = 0   # left
+      when 6; x = 1; y = 0    # right
+      when 8; x = 0; y =-1    # up
+      end
+      pbMoveRoute($game_player, [14, x, y], true)
+      while $game_player.jumping?
+        Graphics.update
+        Input.update
+        pbUpdateSceneMap
+      end
       $game_map.acrobikejump = 0
       direction = nil
     end
