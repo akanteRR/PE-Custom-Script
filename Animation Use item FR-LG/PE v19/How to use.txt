@@ -1,5 +1,5 @@
 *** How to use ***
-Put these file in Plugins\Animation use item:
+Put these files in File.rar in Plugins\Animation use item:
  1 - Animation use item.rb
  2 - Add animation (move).rb
  3 - Add animation (item).rb
