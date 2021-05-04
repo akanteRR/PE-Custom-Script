@@ -4,6 +4,8 @@ In the link, there are script and graphics.
 Graphics: Put the both in 'Graphics\Pictures'
 Script: Put these script above 'Main'
 
+After that, play 'new game' for using this.
+
 - Make poffin -
 Call:
 FeaturesPoffin.play # -> for playing
