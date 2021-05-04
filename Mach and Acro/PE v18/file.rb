@@ -354,7 +354,8 @@ ItemHandlers::UseInField.add(:BICYCLE,proc { |item|
 ItemHandlers::UseInField.add(:ACROBIKE,proc { |item|
   if pbBikeCheck
     $PokemonGlobal.machbike = false
-    if $PokemonGlobal.acrobike
+    tag = $game_map.terrain_tag($game_player.x,$game_player.y)
+    if $PokemonGlobal.acrobike && !PBTerrain.isAcroBike?(tag)
       pbDismountBike
     else
       pbMountBike
