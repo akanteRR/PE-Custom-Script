@@ -8,8 +8,7 @@
 # * Adds the Support for Acro Bikes and Mach Bikes!
 #
 # * How to use:
-#    - Insert Script 
-#       + 'Terrain tag.rb' above Main
+#    - Insert Script
 #       + Puts the files in 'Mach and acro bike.rar' in \Plugins\Mach and acro bike (You need to create folder Mach and acro bike in folder Plugins)
 #
 # * How To Use (Acro Bike):
