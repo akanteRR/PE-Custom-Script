@@ -1,1 +1,1 @@
-Put the scripts in 'Transform Mosaic Animation.rar' in '\Plugins\Transform Mosaic Animation'
+Puts the scripts in 'Transform Mosaic Animation.rar' in '\Plugins\Transform Mosaic Animation'
