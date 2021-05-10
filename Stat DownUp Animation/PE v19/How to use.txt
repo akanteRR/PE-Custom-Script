@@ -1,5 +1,3 @@
-Puts graphics in 'Graphics.rar' in '\Graphics\Pictures\Stats Animation'
-
 ** Choose file **
 Choose one of 2 files, 'Stat Down - Up Animation (2 animations).rar' or 'Stat Down - Up Animation (8 animations).rar', for using.
 Puts the scripts in '\Plugins\Stat DownUp Animation'

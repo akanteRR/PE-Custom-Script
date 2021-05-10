@@ -1,5 +1,4 @@
 Puts 'KleinBitmap.dll' in main folder
-Puts graphics in 'Graphics.rar' in '\Graphics\Pictures\Stats Animation'
 
 ** Choose file **
 Choose one of 2 files, 'Stat Down - Up Animation (2 animations).rb' or 'Stat Down - Up Animation (8 animations).rb', for using
