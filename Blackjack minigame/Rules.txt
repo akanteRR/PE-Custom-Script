@@ -1,0 +1,63 @@
+
+** Value of cards **
+
+The value of cards two through ten is their pip value (2 through 10).
+Face cards (Jack, Queen, and King) are all worth ten.
+Aces can be worth one or eleven. -> If sum of cards (hand's value) is greater than 21, Ace has value 1
+
+** Win **
+
+In my country, this is the method to win.
+If you have 5 cards and sum of cards (hand's value) is less than or equal to 21
+-> "Five cards"
+
+1 Ace and 1 ten-value card or 2 Aces
+-> "Blackjack"
+
+With 21 points (normal)
+
+- Player has value that is less than or equal to 21
+    * Value (dealer) is less than or equal to 21
+	+ Player > Dealer -> Player wins
+	+ Dealer > Player -> Dealer wins
+	+ Player = Dealer -> Draw ("Push" - No one wins)
+    * Value (dealer) is greater than 21 -> Player wins
+
+- Player has value that is greater than 21
+    * Value (dealer) is less than or equal to 21 -> Dealer wins
+    * Value (dealer) is greater than 21 -> Draw ("Push" - No one wins)
+
+If player or dealer has value (hand's value) that is greater than 28, he lose ("Lost all" -> I don't know how to call in English)
+-> This player or dealer must pay all players's bet to them
+(In case player pay to dealer, value of dealer is player bet because dealer doesn't bet)
+
+* Prioritize to win:
+"Five cards" > "Blackjack" > Normal
+
+** Start **
+
+Player bets with 5 values and 1 choice 'all-in'
+Each player has 2 cards and the first card open
+
+** Player's turn (hand) **
+
+Player decisions:
+  Hit
+  Stand
+  Double
+  Give up (Surrender)
+  Insurance
+
+- Hit: Take another card from the dealer.
+- Stand: Take no more cards.
+- Double: Take another card from the dealer and increse bet (100% player's bet)
+- Give up (Surrender): Doesn't play and must split the bet (player lost 1/2 coins)
+- Insurance: Player can bet 1/2 value of coins but the first card of dealer must be Ace
+
+Once all the players have completed their hands, it is the dealer's turn.
+
+** Dealer **
+
+Dealer must open his cards.
+If it's "blackjack", player had "Insurance", he get their bet in this case.
+Dealer draws or opens player's cards
