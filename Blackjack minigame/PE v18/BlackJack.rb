@@ -1849,6 +1849,7 @@ module BlackJack
 		def playerGet
 			player = @player[@mainplayer[:symbol]]
 			$PokemonGlobal.coins += player[:interest] - player[:deficit]
+			$PokemonGlobal.coins -= player[:bet] / 2 if player[:giveup]
 		end
 
 		# Win (Blackjack)
