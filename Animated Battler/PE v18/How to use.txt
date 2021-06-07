@@ -1,4 +1,4 @@
-Puts scripts in 'Animated Battler.rar' in '\Plugins\Animated Battler'
+Puts script in 'Script.rb' above Main
 
 ** Change value **
 You can set wait frame or repeat frame
@@ -6,7 +6,7 @@ You can set wait frame or repeat frame
 What is wait frame? -> One frame moves other frame after 'wait frame' frame.
 What is repeat frame? -> After finishing all frames one times, it return again. Finish animated bitmap when finishing 'repeat frame' times.
 
-Find in '0 - Set repeat.rb'
+Find in 'module RepeatAnimate'
 
 Set trainer:
   + wait frame in WaitT
