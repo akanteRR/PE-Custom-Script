@@ -238,6 +238,85 @@ class PokeBattle_Scene
   end
 end
 
+class TrainerIntroAnimation < PokeBattle_Animation
+  def initialize(sprites,viewport,battle)
+    @battle=battle
+    super(sprites,viewport)
+  end
+
+  def createProcesses
+    @battle.opponent.each_with_index do |p,i|
+			trainer = addSprite(@sprites["trainer_#{i+1}"],PictureOrigin::Bottom)
+			sprite = @sprites["trainer_#{i+1}"]
+			div = sprite.bitmap.width / sprite.bitmap.height
+			return unless div > 1
+			delay = 0
+			trainer.setSrcSize(delay, sprite.bitmap.width / div, sprite.bitmap.height)
+			trainer.setSrc(delay, 0, 0)
+			# Animate
+			curframe = RepeatAnimate::WaitT
+			sum = div * RepeatAnimate::Trainer
+			while sum > 0
+				trainer.setSrc(delay + curframe - RepeatAnimate::WaitT, ((curframe / RepeatAnimate::WaitT) % div) * sprite.bitmap.height, 0)
+				curframe += RepeatAnimate::WaitT
+				sum -= 1
+			end
+			trainer.setSrc(delay + div * RepeatAnimate::Trainer, 0, 0)
+    end
+  end
+end
+
+# Wild battle
+class WildIntroAnimation < PokeBattle_Animation
+  def initialize(sprites,viewport,sideSize)
+    @sideSize = sideSize
+    super(sprites,viewport)
+  end
+
+  def createProcesses
+    for i in 0...@sideSize
+      idxBattler = 2*i+1
+      next if !@sprites["pokemon_#{idxBattler}"]
+      battler = addSprite(@sprites["pokemon_#{idxBattler}"],PictureOrigin::Bottom)
+			sprite  = @sprites["pokemon_#{idxBattler}"]
+			div = sprite.bitmap.width / sprite.bitmap.height
+			return unless div > 1
+			delay = 0
+			battler.setSrcSize(delay, sprite.bitmap.width / div, sprite.bitmap.height)
+			battler.setSrc(delay, 0, 0)
+			# Animate
+			curframe = RepeatAnimate::WaitP
+			sum = div * RepeatAnimate::Pokemon
+			while sum > 0
+				battler.setSrc(delay + curframe - RepeatAnimate::WaitP, ((curframe / RepeatAnimate::WaitP) % div) * sprite.bitmap.height, 0)
+				curframe += RepeatAnimate::WaitP
+				sum -= 1
+			end
+			battler.setSrc(delay + div * RepeatAnimate::Pokemon, 0, 0)
+    end
+  end
+
+end
+
+
+module PokeBattle_BallAnimationMixin
+	alias animate_battler_appear battlerAppear
+	def battlerAppear(battler,delay,battlerX,battlerY,batSprite,color)
+		animate_battler_appear(battler,delay,battlerX,battlerY,batSprite,color)
+		# New
+		div = batSprite.bitmap.width / batSprite.bitmap.height
+		return if div <= 1
+		curframe = RepeatAnimate::WaitP
+		sum = div * RepeatAnimate::Pokemon
+		while sum > 0
+			battler.setSrc(delay + 5 + 1 + curframe - RepeatAnimate::WaitP, ((curframe/RepeatAnimate::WaitP) % div) * batSprite.bitmap.height, 0)
+			curframe += RepeatAnimate::WaitP
+			sum -= 1
+		end
+		battler.setSrc(delay + 5 + 1 + div * RepeatAnimate::Pokemon, 0, 0)
+  end
+end
+
 class PokeBattle_Scene
   def pbBattleIntroAnimation
     # Make everything appear
