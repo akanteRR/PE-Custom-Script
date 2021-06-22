@@ -17,7 +17,7 @@ Set pokemon:
   + repeat frame in Pokemon
 
 
-If you want to animated in some features, add files in 'New features.rar'
+If you want to animated in some features, add files in 'New features.rar' in '\Plugins\Animated Battler'
 
 File must be add: '6 - New function.rb'
 You can set wait frame in 'FRAME_PKMN' and read comments if you want to use 'CHECK_ONE_TIME'
