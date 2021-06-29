@@ -1,0 +1,3 @@
+Name      = Album & Photo
+Version   = 1.0
+Credits   = bo4p5687
