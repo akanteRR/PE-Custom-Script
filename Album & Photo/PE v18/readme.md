@@ -5,14 +5,14 @@ Put the images in folder: Graphics\Pictures\Photo\SceneAbum
 and Scene for taking a photo
 Put the images in folder: Graphics\Pictures\Photo\ScenePhoto
 
-** How to use **
+#** How to use **
 If you want taking a photo, call script: pbTakePhoto(number).
 Example: pbTakePhoto(0) -> 0 it means the first graphic in CONDITION, there are an example in first lines.
 If you want watching album, call script: pbWatchAlbum
 Input Z (on your keyboard), you can take a photo and delete a photo.
 Input A (on your keyboard) for zoom in and Input S (on your keyboard) for zoom out.
 
-** Note **
+#** Note **
 You have 2 methods for delete the photos:
 + In main folder(Graphics\Album), you can delete 998 consecutive photos (1,2,etc,998) and after that, you have photo (999), this script will rename this file for you(999 -> 1). 
 Moreover, you can delete the photos anything you like, this script will rename for you.

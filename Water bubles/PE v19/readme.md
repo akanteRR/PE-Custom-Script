@@ -1,7 +1,7 @@
 Puts 'Graphics.rar' in 'Graphics\Pictures\Water Bubles'
 Puts 'Script.rar' in '\Plugins\Water bubles'
 
-** How to use **
+#** How to use **
 You can set pokemon who can't have water bubles.
 Set in FOLLOWING_NOT_BUBLES -> set number id of pokemon
 

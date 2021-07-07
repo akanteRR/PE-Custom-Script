@@ -1,7 +1,7 @@
 Puts 'Graphics.rar' in 'Graphics\Pictures\Footprints'
 Puts 'Script.rar' in '\Plugins\Footprints'
 
-** How to use **
+#** How to use **
 You can set pokemon who can't have footprints.
 Set in FOLLOWING_DONT_WALK -> set number id of pokemon
 

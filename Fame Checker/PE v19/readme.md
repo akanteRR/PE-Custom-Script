@@ -10,9 +10,9 @@ Of course, you can change this number "530".
 
 2. Call: FameChecker.show
 
-** How to use **
+#** How to use **
 
-* First, add informations of famous in file '2 - Set value to store.rb'
+#* First, add informations of famous in file '2 - Set value to store.rb'
 
 2 actions:
   + Add: FameChecker.list
@@ -20,7 +20,7 @@ Of course, you can change this number "530".
 
 Write like examples, must add all values and read carefull comments to add
 
-* Second, after add information, set it true if you want to see
+#* Second, after add information, set it true if you want to see
 
 See: famous person -> Call: FameChecker.seenList(name) -> name is value that you added in FameChecker.list(name, hash)
 													    /\

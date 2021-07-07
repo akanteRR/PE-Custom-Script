@@ -1,6 +1,6 @@
 Puts scripts in 'Animated Battler.rar' in '\Plugins\Animated Battler'
 
-** Change value **
+#** Change value **
 You can set wait frame or repeat frame
 
 What is wait frame? -> One frame moves other frame after 'wait frame' frame.

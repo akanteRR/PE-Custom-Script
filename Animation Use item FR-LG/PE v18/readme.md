@@ -1,10 +1,10 @@
-*** How to use ***
+#*** How to use ***
 Put main script above Main.
 Put the images in Graphics\Pictures\Use Animations.
 
-*** Important ***
+#*** Important ***
 
-*** Items ***
+#*** Items ***
 
 Find this command (ItemHandlers::UseOnPokemon) and add some lines for adding animation.
 Example:
@@ -61,7 +61,7 @@ above...
 	scene.endUseAnimations
 You do like it such as ANTIDOTE, BURNHEAL,etc. All items use healStatus.
 
-* Other items *
+#* Other items *
 Max revive:
 Find
 ItemHandlers::UseOnPokemon.add(:MAXREVIVE,proc { |item,pkmn,scene|
@@ -90,7 +90,7 @@ above...
 	scene.endUseAnimations
 You do like it such as Elixir, max elixir,etc.
 
-* Other items *
+#* Other items *
 PP Up:
 Find
 ItemHandlers::UseOnPokemon.add(:PPUP,proc { |item,pkmn,scene|
@@ -112,11 +112,11 @@ add...
 	scene.endUseAnimations
 ...when you want to delete this scene
 
-**** Remember ****
+#**** Remember ****
 Just add above this line...
 	next true
 
-*** TM/HM ***
+#*** TM/HM ***
 
 Find
 def pbLearnMove(pkmn,move,ignoreifknown=false,bymachine=false,&block)

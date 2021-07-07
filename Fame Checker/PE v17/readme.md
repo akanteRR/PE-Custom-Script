@@ -2,7 +2,7 @@ Puts this script above Main
 Puts graphics "FameChecker" in '\Graphics\Pictures'
 Puts graphics item in 'Graphics\Icons'
 
-** How to use **
+#** How to use **
 
 Add a new item and read this script, the first lines.
 

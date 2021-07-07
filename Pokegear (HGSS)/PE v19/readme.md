@@ -1,7 +1,7 @@
 Puts scripts 'Pokegear - HGSS.rar' in '\Plugins\Pokegear - HGSS'
 Puts graphics 'Graphics.rar' in '\Graphics\Pictures\Pokegear HGSS'
 
-** How to use **
+#** How to use **
 
 Graphics:
   You need to set script before adding new graphics

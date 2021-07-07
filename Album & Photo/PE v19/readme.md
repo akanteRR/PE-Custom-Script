@@ -1,7 +1,7 @@
 Puts 'Script.rar' in '\Plugins\Album & Photo'
 Puts 'Graphics.rar' in '\Graphics\Pictures'
 
-** How to use **
+#** How to use **
 Read in folder '1 - Photo' of 'Script.rar', read these files:
 	0-1 - Guide.rb -> Guide you how to create scene with script (Read carefully)
 	0-2 - Set value.rb -> Example if you want don't know how to add

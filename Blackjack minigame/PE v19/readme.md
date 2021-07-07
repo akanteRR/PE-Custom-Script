@@ -1,11 +1,11 @@
-Puts this script above Main
+Puts the scripts in 'Blackjack minigame.rar' in '\Plugins\Blackjack minigame'
 
-** How to use **
+#** How to use **
 Call: BlackJack.play
 
 You can get negative value after play, be carefull.
 
-** Change value **
+#** Change value **
 Read comment before change something.
 
 Value of chips in ValueChips
