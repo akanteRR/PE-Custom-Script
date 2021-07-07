@@ -5,23 +5,23 @@
 #-------------------------------------------------------------------------------
 # bo4p5687 - update
 #-------------------------------------------------------------------------------
-# * Adds the Support for Acro Bikes and Mach Bikes!
+#  Adds the Support for Acro Bikes and Mach Bikes!
 #
-# * How to use:
+#  How to use:
 #    - Insert Script
 #       + Puts the files in 'Mach and acro bike.rar' in \Plugins\Mach and acro bike (You need to create folder Mach and acro bike in folder Plugins)
 #
-# * How To Use (Acro Bike):
+#  How To Use (Acro Bike):
 #    - Edit the AcroBikeFileName Setting to what your Acro Bike Graphics would be
 #    - ADD THE GRAPHICS INTO THE CHARACTERS FOLDER
 #    - ADD THE ITEM "ACROBIKE" (The internal name must be ACROBIKE at the very
 #       least)
 #
-# * How To Use (Mach Bike):
+#  How To Use (Mach Bike):
 #   - ADD THE ITEM "MACHBIKE" (The internal name must be MACHBIKE at the very
 #       least)
 #
-# * How to create Acro Bike Rails:
+#  How to create Acro Bike Rails:
 #   - Go into the Tileset Editor (through DEBUG mode or Essentials)
 #   - Find your desired Acro Bike Rails and set their Terrain Tag to (18 for Up/Down Rails) or (19 for Left/Right Rails)
 #   - Go into RMXP's tileset editor and set the passages (4dir) of the rails
@@ -29,13 +29,13 @@
 #     left and right passages open but the top and bottom closed)
 #
 #
-# * How to create Acro Bike Stepping Stones:
+#  How to create Acro Bike Stepping Stones:
 #   - Go into the Tileset Editor (through DEBUG mode or Essentials)
 #   - Find your desired Acro Bike Stepping Stones and set their Terrain Tag to 20
 #   - Go into RMXP's tileset editor and set the passages of the stepping stones
 #     to impassable (the script will allow you to move on them while hopping)
 #
-# * How to create Mach Bike Slopes:
+#  How to create Mach Bike Slopes:
 #   - Go into the Tileset Editor (through DEBUG mode or Essentials)
 #   - Find your desired Mach Bike Slopes and set their Terrain Tag to 21
 #   - Go into RMXP's tileset editor and set the passages of the slope to passable

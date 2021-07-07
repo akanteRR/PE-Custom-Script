@@ -1,4 +1,4 @@
-#*** How to use ***
+# How to use 
 Put these files in File.rar in Plugins\Animation use item:
  1 - Animation use item.rb
  2 - Add animation (move).rb
@@ -6,13 +6,13 @@ Put these files in File.rar in Plugins\Animation use item:
  meta.txt
 Put the images in Graphics\Pictures\Use Animations.
 
-#*** Important ***
+# Important 
 
-#*** TM/HM ***
+# TM/HM 
 I made everything in file '2 - Add animation (move).rb'
 Don't change or modify if you don't know what you do.
 
-#*** Items ***
+# Items 
 Modify items in file '3 - Add animation (item).rb'
 
 Find this command (ItemHandlers::UseOnPokemon) and add some lines for adding animation.
@@ -53,7 +53,7 @@ copy all in file '3 - Add animation (item).rb' and above...
 	scene.endUseAnimations
 You do like it such as ANTIDOTE, BURNHEAL,etc. All items use healStatus.
 
-#* Other items *
+# Other items 
 Max revive:
 Find something like
 ItemHandlers::UseOnPokemon.add(:MAXREVIVE,proc { |item,pkmn,scene|
@@ -82,7 +82,7 @@ copy all in file '3 - Add animation (item).rb' and above...
 	scene.endUseAnimations
 You do like it such as Elixir, max elixir,etc.
 
-#* Other items *
+# Other items 
 PP Up:
 Find something like
 ItemHandlers::UseOnPokemon.add(:PPUP,proc { |item,pkmn,scene|
@@ -105,6 +105,6 @@ copy all in file '3 - Add animation (item).rb' and add...
 	scene.endUseAnimations
 ...when you want to delete this scene...
 
-#****** Remember ****** 
+# Remember  
 Just add above this line...
 	next true

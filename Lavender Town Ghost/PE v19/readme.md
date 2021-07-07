@@ -1,7 +1,7 @@
 Puts graphics 'Ghost.png' in '\Graphics\Pictures'
 Puts script in 'Script.rar' in '\Plugins\Lavender Town Ghosts'
 
-#* How to use *
+# How to use 
 
 Change or add new map id in GHOSTMAPS.
 Example: 

@@ -2,7 +2,7 @@ Puts the script in 'Video with using Gif.rar' in folder '\Plugins\Video with usi
 Create folder with name like DirGif (default: 'Gif') in root folder and in Audio/BGM
 Puts files gif in Gif folder and files sound in Audio/BGM/Gif (Gif is example name)
 
-#** Set script for using **
+# Set script for using 
 You have 2 methods for call script
 
 One time:
@@ -11,7 +11,7 @@ Video.once(true,true,true,true) {arr}
 Multiple times:
 Video.multi(true,true,true,true) {arr}
 
-#* Meaning:
+# Meaning:
 
 Word 'true':
 First  -> set 'can next'  -> Player can press button next
@@ -35,7 +35,7 @@ pitch  -> Set pitch of this gif. If you don't set, just leave it. Script will se
 
 You can see examples in this link: https://youtu.be/DDCAWq-eEPk
 
-#** Set in the script **
+# Set in the script 
 You can some values in this script:
 	DirGif
 	StopKey
@@ -44,7 +44,7 @@ You can some values in this script:
 	PauseKey
 	TimesKey
 
-#* Meaning:
+# Meaning:
 DirGif ->  Folder contains gifs and you need to set folder like this Audio/BGM/. If you don't set, script will create for you but there aren't file in this.
 StopKey, BackKey, NextKey, PauseKey, TimesKey -> Key on keyboard.
 

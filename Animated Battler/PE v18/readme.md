@@ -1,6 +1,6 @@
 Puts script in 'Script.rb' above Main
 
-#** Change value **
+# Change value 
 You can set wait frame or repeat frame
 
 What is wait frame? -> One frame moves other frame after 'wait frame' frame.
