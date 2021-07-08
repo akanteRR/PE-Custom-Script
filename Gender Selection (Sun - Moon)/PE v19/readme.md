@@ -5,6 +5,9 @@ Puts `Script` in `\Plugins\Gender selection (style SM)`
 # How to use
 Puts portrait of player in '\Pictures\GenderSelection', each picture has size 100 x 100
 
+### Call script
+`GenderPickSelection.show`
+
 #### Name of pictures:
 You can find it in these values:
 * SET_NAME
