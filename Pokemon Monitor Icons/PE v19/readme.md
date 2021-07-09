@@ -16,3 +16,6 @@ end
 * You can change zoom with this method -> MonitorIcons.show(x', y', zoom)
 * If you want to change zoom but you don't want to change x and y, just call MonitorIcons.show(0, 0, zoom)
 * It uses icon file of PE
+#### Example
+In event Nurse, you can try use this coordinate
+-> MonitorIcons.show(15, -65, 0.45)
