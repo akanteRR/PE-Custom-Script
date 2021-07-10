@@ -1,1 +1,1 @@
-Puts 'Graphics' in 'Graphics\Pictures\Check stats'
+Puts `Graphics` in `Graphics\Pictures\Check stats`
