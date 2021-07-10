@@ -1,4 +1,4 @@
-Puts 'Script' in '\Plugins\Check stats in battle'
+Puts 'Script' above Main
 
 # How to use
 
