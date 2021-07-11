@@ -5,3 +5,5 @@ Puts `Script` in `\Plugins\Check stats in battle`
 Press button of `Action` in battle scene.
 
 Use keys to see stats.
+
+You can add new battlefield effects in file `4 - Battle.rb`
