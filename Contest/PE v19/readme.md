@@ -10,6 +10,9 @@ Puts in `Graphics\Pictures\Contest`
 # Script
 Puts in `Plugins\Pokemon contest`
 
+# Map example
+You can rename and replace your map with map example in `Map`
+
 # How to use
 * You can define new move in this file
 > `0 - Set Moves.txt` of folder `0 - Move`
