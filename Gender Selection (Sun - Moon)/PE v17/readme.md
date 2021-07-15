@@ -22,5 +22,5 @@ For 'background for selecting', if you redraw, you should draw exactly position 
 The avatar:
 
 The position of the characters:
-+ Above: Player A, Player C, Player E, Player G
-+ Below: Player B, Player D, Player F, Player H
++ Above: Player A, Player B, Player C, Player D
++ Below: Player E, Player F, Player G, Player H
