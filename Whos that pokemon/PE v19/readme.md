@@ -21,4 +21,7 @@ There are 3 types reward
 Find and edit `LEVEL_PKMN`, `LEVEL_PKMN_POINTS` and `LEVEL_PKMN_SPECIAL`
 #### Set reward in wheel
 Find this def
-> def set_reward_wheel(angle). Set your reward in this def
+> def set_reward_wheel(angle). Set condition and your reward in this def
+#### Set reward by points
+Find this def
+> def reward_points. Set condition and your reward in this def
