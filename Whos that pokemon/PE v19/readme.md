@@ -3,6 +3,11 @@ Puts `Script` in `\Plugins\Whos that pokemon`
 Puts `Graphics` in `Graphics\Pictures\Whos That Pokemon`
 
 # How to use
+### Call script
+> Call: WhosThatPkmn.show
+> You can call WhosThatPkmn.show(true) if you want to guess form (case: pokemon has multi form)
+> You can call WhosThatPkmn.show(false, true) - pokemon shows his shiny form but he doesn't show other form.
+> You can call WhosThatPkmn.show(true, true) - pokemon shows his shiny form and he can show other form (if he can).
 ### Some values you can change
 #### Write rules
 Find and edit `RULES`
