@@ -47,5 +47,12 @@ All sequences have this action: create event `$Trainer.mystery_gift_unlocked = t
 
 This action will unclock event.
 
+# Get gifts
+In example event, you can see these lines
+> id = pbNextMysteryGiftID
+> pbReceiveMysteryGift(id)
+
+Change `id = pbNextMysteryGiftID` into `id = pbNextMysteryGiftID(true)`
+
 ### Note
 I put some files and links when you want to test.
