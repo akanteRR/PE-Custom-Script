@@ -31,7 +31,9 @@ Offline: `Mystery Gift`
 
 ### Sequence (create file or create file and upload content)
 ##### 1. Custom (include: Custom + PE)
-Create event `MGBW.encrypt` -> Start game -> Touch this event -> Save
+First, create custom gift in `0 - 2 - Set value.rb`. Read guide and examples to use.
+
+Second, create event `MGBW.encrypt` -> Start game -> Touch this event -> Save
 
 About `Custom + PE`, after `touch` or `start game`, you will go to debug then press `Manage Mystery Gifts`.
 
@@ -44,3 +46,6 @@ Do like normal, you can see Thundaga video to learn it.
 All sequences have this action: create event `$Trainer.mystery_gift_unlocked = true` and touch it.
 
 This action will unclock event.
+
+### Note
+I put some files and links when you want to test.
