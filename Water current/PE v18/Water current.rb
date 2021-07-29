@@ -23,6 +23,29 @@ module PBTerrain
            tag==PBTerrain::CurrentUp
   end
 
+	def self.isWater?(tag)
+    return tag==PBTerrain::Water ||
+           tag==PBTerrain::StillWater ||
+           tag==PBTerrain::DeepWater ||
+           tag==PBTerrain::WaterfallCrest ||
+           tag==PBTerrain::Waterfall ||
+           tag==PBTerrain::CurrentDown ||
+           tag==PBTerrain::CurrentLeft ||
+           tag==PBTerrain::CurrentRight ||
+           tag==PBTerrain::CurrentUp
+  end
+
+  def self.isPassableWater?(tag)
+    return tag==PBTerrain::Water ||
+           tag==PBTerrain::StillWater ||
+           tag==PBTerrain::DeepWater ||
+           tag==PBTerrain::WaterfallCrest ||
+           tag==PBTerrain::CurrentDown ||
+           tag==PBTerrain::CurrentLeft ||
+           tag==PBTerrain::CurrentRight ||
+           tag==PBTerrain::CurrentUp
+  end
+
   def PBTerrain.isLeft?(tag)
     return tag==PBTerrain::CurrentLeft
   end
