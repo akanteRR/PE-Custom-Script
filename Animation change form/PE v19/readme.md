@@ -14,6 +14,7 @@ Read and do like these lines wrote
 
 ## Write new function
 1. Read file `3 - Add animation.rb`
+1. Use `ItemHandlers::AnimationForm.add` not `ItemHandlers::UseOnPokemon.add`
 1. Use 2 methods
 ```
 scene.change_form_animation -> Change animation (normal)
