@@ -15,7 +15,7 @@ module BlackJack
 	class Play
 
 		# Check delay for clicking
-		DelayMouse = 1
+		DelayMouse = 0
 		# Quantity of player (Dont change it)
 		QuantityPlayer = 4
 		# Name of AI, the size of this array must be greater than or equal to 3
@@ -289,7 +289,7 @@ module BlackJack
 			end
 			x = arr[0]; y = arr[1]; r = arr[2]
 			rect = [x, 2*r+x, y, 2*r+y]
-			m = @oldm
+			m = @oldm.clone
 			return false unless m[0]>=rect[0] && m[0]<=rect[1] && m[1]>=rect[2] && m[1]<=rect[3]
 			2.times { |i| m[i] -= arr[i] if m[i] >= arr[i] }
 			equation = (m[0] - r)**2 + (m[1] - r)**2
