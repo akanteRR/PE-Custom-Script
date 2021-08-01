@@ -1,5 +1,6 @@
 # How to use:
 1. About pokeblock
+
 `pbPokeBlock` #-> open Pokeblock or you can use item PokeBlock
 
 `pbPokeNav_Condition` #-> open "check party of PokeNav"
@@ -23,7 +24,7 @@ About Black, this creates when you have same berries.
 About Gray, there are 3 flavors in a berry and White, there are 4 flavors.
 About 2 last color column, first, there are 1 flavor and second, there are 2 flavors in a berry.
 ```
-1. About Berry blender
+3. About Berry blender
 * You can give the name with the computer (AI).
 * About berries of a player special (this is a master berry blender), you can give the name of berries what you want him to play with the player. (note: the name of these berries must is the name of the berries in your file item.txt)
 Example:
