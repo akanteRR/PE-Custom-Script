@@ -5,7 +5,7 @@
 
 `pbPokeNav_Condition` #-> open "check party of PokeNav"
 
-1. About berry blender
+2. About berry blender
 ```
 pbOneplayer #-> mode one player
 pbTwoplayers #-> mode two players
