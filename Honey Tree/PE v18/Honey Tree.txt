@@ -1,0 +1,239 @@
+#-------------------------------------------------------------------------------
+#                           Honey Tree by bo4p5687
+#-------------------------------------------------------------------------------
+# Call script:
+# pbHoneyTree(20,5,0,true,true)
+#
+# 20: Pokemon's level
+#
+# 5: random + or - level, here, Pokemon's level is 23 or 17 or 24,etc
+#
+# 0: example below (POKEMON_HONEY_TREE)
+#
+# true: you want function expire time, it means after a few time, pokemon is gone.
+# (you can check below - TIME_EXPIRE)
+#
+# true: you want function special map, it means this map where pokemon can appears
+# soon or later. (you can check below - TIME_SPECIAL)
+#-------------------------------------------------------------------------------
+PluginManager.register({
+  :name    => "Honey Tree",
+  :version => "1.1",
+  :credits => "bo4p5687"
+})
+#-------------------------------------------------------------------------------
+POKEMON_HONEY_TREE = [
+# spepkm = 0
+[[:ODDISH,:GLOOM,:DODUO], # Normal
+[:DODRIO,:RHYHORN], # Special
+[:PINSIR]], # Very special
+# spepkm = 1
+[[:ODDISH,:PARAS,:VENONAT],
+[:LEDIAN,:JUMPLUFF],
+[:SCYTHER]]
+# etc
+]
+#-------------------------------------------------------------------------------
+class HoneyTree
+#-------------------------------------------------------------------------------
+# Here, the number is seconds
+  TIME_HONEY = 300 # After this time (TIME_HONEY), you can fight
+  TIME_EXPIRE = 3600 # After this time (TIME_EXPIRE), pokemon is gone
+  TIME_SPECIAL = 600 # After this time (TIME_SPECIAL), you can fight
+#-------------------------------------------------------------------------------
+  DIALOGUE_HONEYTREE = [
+  [
+  # Confirm message (just only one sentence)
+  ["Would you like to place honey on the HONEY FEEDER?"]
+  ],[
+  # After confirm
+  # Success
+  ["The HONEY was placed on the HONEY FEEDER."]
+  ],[
+  # Fail
+  ["You don't have any HONEY!"]
+  ],[
+  # Switch is on
+  # There is Pokemon
+  ["Woah! There's a Pokemon eating away at the HONEY"],
+  ["It attacked in anger"]
+  ],[
+  # There isn't Pokemon
+  ["The HONEY you left before is still here."],
+  ],[
+  # Time expire
+  ["Oh No! Pokemon is gone!!!"]
+  ]
+  ]
+#-------------------------------------------------------------------------------
+  def initialize(level=1,randomlvl=1,spepkm=0,eprtime=false,spemap=false)
+    # Set event
+    @thisEvent = pbMapInterpreter.get_character(0)
+    # Set map
+    gameMap = $game_map.map_id
+    # Set key for $game_self_switches
+    @key_A = [gameMap,@thisEvent.id,"A"]
+    @key_B = [gameMap,@thisEvent.id,"B"]
+    # Set level
+    @level     = level
+    @randomlvl = randomlvl
+    # Condition
+    @expire_t  = eprtime
+    @special_m = spemap
+    @special_p = spepkm
+  end
+
+
+  def honey
+    pbMoveRoute(@thisEvent,[PBMoveRoute::TurnDown])
+    if !$game_self_switches[@key_A] && !$game_self_switches[@key_B]
+      check_honey
+    elsif $game_self_switches[@key_A]
+      if !@special_m && check_time
+        after_check
+      elsif @special_m && check_special
+        after_check
+      else
+        (0...DIALOGUE_HONEYTREE[4].size).each{|i| pbMessage(_INTL("{1}",DIALOGUE_HONEYTREE[4][i]))}
+      end
+    end
+    if $game_self_switches[@key_B]
+      if @expire_t
+        if check_gone
+          # Dialogue
+          (0...DIALOGUE_HONEYTREE[5].size).each{|i| pbMessage(_INTL("{1}",DIALOGUE_HONEYTREE[5][i]))}
+          # Finish this script
+          honey_finish
+        else
+          meet_pokemon
+        end
+      else
+        meet_pokemon
+      end
+    end
+  end
+
+  # Check honey in your bag
+  def check_honey
+    if pbConfirmMessage(_INTL("{1}",DIALOGUE_HONEYTREE[0][0]))
+      if $PokemonBag.pbQuantity(PBItems::HONEY)>0
+        # Delete Item
+        $PokemonBag.pbDeleteItem(PBItems::HONEY,1)
+        $game_self_switches[@key_A] = true
+        $game_map.need_refresh = true
+        # Set time
+        pbMapInterpreter.pbSetEventTime
+        # Dialogue
+        (0...DIALOGUE_HONEYTREE[1].size).each{|i| pbMessage(_INTL("{1}",DIALOGUE_HONEYTREE[1][i]))}
+      else
+        # Dialogue
+        (0...DIALOGUE_HONEYTREE[2].size).each{|i| pbMessage(_INTL("{1}",DIALOGUE_HONEYTREE[2][i]))}
+      end
+    end
+  end
+
+  # Check time when pokemon come
+  def check_time
+    return true if @thisEvent.expired?(TIME_HONEY)
+    @thisEvent.need_refresh = true
+    return false
+  end
+
+  # Check time when pokemon is gone
+  def check_gone
+    return true if @thisEvent.expired?(TIME_EXPIRE)
+    @thisEvent.need_refresh = true
+    return false
+  end
+
+  # Check time when player place Honey in special map
+  def check_special
+    return true if @thisEvent.expired?(TIME_SPECIAL)
+    @thisEvent.need_refresh = true
+    return false
+  end
+
+  # After check time
+  def after_check
+    $game_self_switches[@key_A] = false
+    $game_self_switches[@key_B] = true
+    $game_map.need_refresh = true
+    @thisEvent.setTempSwitchOn("A")
+  end
+
+  def meet_pokemon
+    # Dialogue
+    (0...DIALOGUE_HONEYTREE[3].size).each{|i| pbMessage(_INTL("{1}",DIALOGUE_HONEYTREE[3][i]))}
+    # Shake
+    shake_tree(@thisEvent,2,3)
+    # Pokemon
+    @special_p = 0 if @special_p < 0
+    if @special_p >= POKEMON_HONEY_TREE.length
+      raise ArgumentError.new(_INTL("Please change your special pokemon's number "))
+    else
+      random_group = rand(10)
+      if random_group >= 0  && random_group < 6
+        list = POKEMON_HONEY_TREE[@special_p][0]
+      elsif random_group >= 6  && random_group < 9
+        list = POKEMON_HONEY_TREE[@special_p][1]
+      else
+        list = POKEMON_HONEY_TREE[@special_p][2]
+      end
+      num = rand(list.length)
+      pkmn = getID(PBSpecies,list[num])
+      # Random level
+      randomlevel = rand(2)
+      case randomlevel
+      when 1
+        randomagain = @level+rand(@randomlvl)
+        pbWildBattle(pkmn,randomagain)
+      when 0
+        randomagain = @level-rand(@randomlvl)
+        if randomagain <= 0
+          randomagain = 1
+          pbWildBattle(pkmn,randomagain)
+        else
+          pbWildBattle(pkmn,randomagain)
+        end
+      end
+    end
+    # Finish this script
+    honey_finish
+  end
+
+  # Shake
+  def shake_tree(event,nmt=2,number=2)
+    proc = 0
+    loop do
+      if proc==0
+        nmt.times{pbMoveRoute(event,[
+         PBMoveRoute::Wait,number,
+         PBMoveRoute::TurnLeft,
+         PBMoveRoute::Wait,number,
+         PBMoveRoute::TurnRight,
+         PBMoveRoute::Wait,number,
+         PBMoveRoute::TurnUp,
+         PBMoveRoute::Wait,number,
+         PBMoveRoute::TurnDown,
+         PBMoveRoute::Wait,(number*4)
+         ])
+        pbWait(Graphics.frame_rate*5/10+(number**2)/2+1)
+        proc += 1}
+      elsif proc >= nmt
+        break
+      end
+    end
+  end
+
+  # Finish
+  def honey_finish
+    $game_self_switches[@key_B] = false
+    $game_map.need_refresh = true
+  end
+
+end
+
+def pbHoneyTree(level=1,randomlvl=1,spepkm=0,eprtime=false,spemap=false)
+  scene = HoneyTree.new(level,randomlvl,spepkm,eprtime,spemap)
+  scene.honey
+end
