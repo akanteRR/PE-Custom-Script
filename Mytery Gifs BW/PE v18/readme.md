@@ -1,4 +1,4 @@
-Put `Scripts` in `\Plugins\Mystery Gifs - BW Mode`
+Put `Scripts` above Main
 
 # How to use
 Write code to get gift.
@@ -41,7 +41,7 @@ If you don't see custom gift, you can add it after pressing `Manage Mystery Gift
 ##### 2. PE
 Do like normal, you can see Thundaga video to learn it.
 
-All sequences have this action: create event `$Trainer.mystery_gift_unlocked = true` and touch it.
+All sequences have this action: create event `$Trainer.mysterygiftaccess = true` and touch it.
 
 This action will unclock event.
 
