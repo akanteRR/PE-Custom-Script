@@ -1,4 +1,4 @@
-Puts 'Script.rar' in above Main
+Puts 'Script.rar' above Main
 
 Read first lines in '1-1 - Set value.rb' to change tile into autotile
 
