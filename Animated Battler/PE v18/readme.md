@@ -2,7 +2,7 @@ Puts script in 'Script.rb' above Main
 
 
 
-# Change value 
+# Change value
 
 You can set wait frame or repeat frame
 
@@ -32,3 +32,10 @@ Set pokemon:
 
   + repeat frame in Pokemon
 
+Set animated in battle
+
+  + Animated -> If you set true, it will show animated
+
+  + Speed -> Speed of this animated. After this times, graphic moves to other frame.
+
+  + First -> Use when pokemon use moves. If you set it true, pokemon that will show first frame use move

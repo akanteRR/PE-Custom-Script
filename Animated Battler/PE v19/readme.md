@@ -2,7 +2,7 @@ Puts scripts in 'Animated Battler.rar' in '\Plugins\Animated Battler'
 
 
 
-# Change value 
+# Change value
 
 You can set wait frame or repeat frame
 
@@ -16,15 +16,11 @@ What is repeat frame? -> After finishing all frames one times, it return again. 
 
 Find in '0 - Set repeat.rb'
 
-
-
 Set trainer:
 
   + wait frame in WaitT
 
   + repeat frame in Trainer
-
-
 
 Set pokemon:
 
@@ -32,13 +28,15 @@ Set pokemon:
 
   + repeat frame in Pokemon
 
+Set animated in battle
 
+  + Animated -> If you set true, it will show animated
 
+  + Speed -> Speed of this animated. After this times, graphic moves to other frame.
 
+  + First -> Use when pokemon use moves. If you set it true, pokemon that will show first frame use move
 
 If you want to animated in some features, add files in 'New features.rar' in '\Plugins\Animated Battler'
-
-
 
 File must be add: '6 - New function.rb'
 
