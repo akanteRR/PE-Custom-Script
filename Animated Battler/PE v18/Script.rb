@@ -17,6 +17,15 @@ module RepeatAnimate
 	WaitP = 1 # Pokemon
 end
 
+# Animated pokemon
+module AnimatedBattlers
+	Animated = true
+	# After 4 frames, it will change graphic (move to next frame)
+	Speed = 4
+	# First frames. If you set it true, pokemon that will show first frame use move
+	First = true
+end
+
 #===============================================================================
 # Pokémon sprite (used out of battle)
 #===============================================================================
@@ -91,6 +100,13 @@ end
 
 class PokemonBattlerSprite
 
+  alias animated_battler_init initialize
+	def initialize(viewport,sideSize,index,battleAnimations)
+		animated_battler_init(viewport,sideSize,index,battleAnimations)
+		@speed_animated = 0
+		@frame_animated = 0
+	end
+
 	# Return first frame
 	def firstFrame
 		return if !self.bitmap
@@ -121,7 +137,15 @@ class PokemonBattlerSprite
     # Update bitmap
     @_iconBitmap.update
     self.bitmap = @_iconBitmap.bitmap
-		firstFrame # Set again
+
+		# Set src_rect
+		if AnimatedBattlers::Animated
+			@speed_animated += 1
+			multi_frames if @speed_animated % AnimatedBattlers::Speed == 0
+		else
+			firstFrame
+		end
+
     # Pokémon sprite bobbing while Pokémon is selected
     @spriteYExtra = 0
     if @selected==1    # When choosing commands for this Pokémon
@@ -143,6 +167,97 @@ class PokemonBattlerSprite
     @updating = false
   end
 
+end
+
+class PBAnimationPlayerX
+  def update
+    return if @frame<0
+    animFrame = @frame/@framesPerTick
+    # Loop or end the animation if the animation has reached the end
+    if animFrame >= @animation.length
+      @frame = (@looping) ? 0 : -1
+      if @frame<0
+        @animbitmap.dispose if @animbitmap
+        @animbitmap = nil
+        return
+      end
+    end
+    # Load the animation's spritesheet and assign it to all the sprites.
+    if !@animbitmap || @animbitmap.disposed?
+      @animbitmap = AnimatedBitmap.new("Graphics/Animations/"+@animation.graphic,
+         @animation.hue).deanimate
+      for i in 0...MAX_SPRITES
+        @animsprites[i].bitmap = @animbitmap if @animsprites[i]
+      end
+    end
+    # Update background and foreground graphics
+    @bgGraphic.update
+    @bgColor.update
+    @foGraphic.update
+    @foColor.update
+    # Update all the sprites to depict the animation's next frame
+    if @framesPerTick==1 || (@frame%@framesPerTick)==0
+      thisframe = @animation[animFrame]
+      # Make all cel sprites invisible
+      for i in 0...MAX_SPRITES
+        @animsprites[i].visible = false if @animsprites[i]
+      end
+      # Set each cel sprite acoordingly
+      for i in 0...thisframe.length
+        cel = thisframe[i]
+        next if !cel
+        sprite = @animsprites[i]
+        next if !sprite
+        # Set cel sprite's graphic
+        case cel[AnimFrame::PATTERN]
+        when -1
+          sprite.bitmap = @userbitmap
+
+          # Change
+          sprite.src_rect.width = sprite.src_rect.width
+					sprite.x = 0 if AnimatedBattlers::First
+          
+        when -2
+          sprite.bitmap = @targetbitmap
+
+          # Change
+					sprite.src_rect.width = sprite.src_rect.width
+					sprite.x = 0 if AnimatedBattlers::First
+
+        else
+          sprite.bitmap = @animbitmap
+        end
+        # Apply settings to the cel sprite
+        pbSpriteSetAnimFrame(sprite,cel,@usersprite,@targetsprite)
+        case cel[AnimFrame::FOCUS]
+        when 1   # Focused on target
+          sprite.x = cel[AnimFrame::X]+@targetOrig[0]-PokeBattle_SceneConstants::FOCUSTARGET_X
+          sprite.y = cel[AnimFrame::Y]+@targetOrig[1]-PokeBattle_SceneConstants::FOCUSTARGET_Y
+        when 2   # Focused on user
+          sprite.x = cel[AnimFrame::X]+@userOrig[0]-PokeBattle_SceneConstants::FOCUSUSER_X
+          sprite.y = cel[AnimFrame::Y]+@userOrig[1]-PokeBattle_SceneConstants::FOCUSUSER_Y
+        when 3   # Focused on user and target
+          next if !@srcLine || !@dstLine
+          point = transformPoint(
+             @srcLine[0],@srcLine[1],@srcLine[2],@srcLine[3],
+             @dstLine[0],@dstLine[1],@dstLine[2],@dstLine[3],
+             sprite.x,sprite.y)
+          sprite.x = point[0]
+          sprite.y = point[1]
+          if isReversed(@srcLine[0],@srcLine[2],@dstLine[0],@dstLine[2]) &&
+             cel[AnimFrame::PATTERN]>=0
+            # Reverse direction
+            sprite.mirror = !sprite.mirror
+          end
+        end
+        sprite.x += 64 if @inEditor
+        sprite.y += 64 if @inEditor
+      end
+      # Play timings
+      @animation.playTiming(animFrame,@bgGraphic,@bgColor,@foGraphic,@foColor,@oldbg,@oldfo,@user)
+    end
+    @frame += 1
+  end
 end
 
 def pbSpriteSetAnimFrame(sprite,frame,user=nil,target=nil,inEditor=false)
@@ -172,8 +287,11 @@ def pbSpriteSetAnimFrame(sprite,frame,user=nil,target=nil,inEditor=false)
        animwidth,animwidth)
   else
     sprite.src_rect.set(0,0,
-       (sprite.bitmap) ? sprite.bitmap.width / (div>1 ? div : 1) : 128, # Change
-       (sprite.bitmap) ? sprite.bitmap.height : 128)
+
+      # Change
+      (sprite.bitmap) ? sprite.src_rect.width : 128,
+      (sprite.bitmap) ? sprite.src_rect.height : 128)
+
   end
   sprite.zoom_x = frame[AnimFrame::ZOOMX]/100.0
   sprite.zoom_y = frame[AnimFrame::ZOOMY]/100.0
